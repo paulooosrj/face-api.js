@@ -28,11 +28,11 @@ module.exports = function(config) {
     browsers: process.env.KARMA_BROWSERS
       ? process.env.KARMA_BROWSERS.split(',')
       : ['Chrome'],
-    browserNoActivityTimeout: 60000,
+    browserNoActivityTimeout: 120000,
     captureTimeout: 60000,
     client: {
       jasmine: {
-        timeoutInterval: 60000
+        timeoutInterval: 120000
       }
     },
     customLaunchers: {
