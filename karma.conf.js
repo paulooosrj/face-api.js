@@ -25,15 +25,20 @@ module.exports = function(config) {
     karmaTypescriptConfig: {
       tsconfig: 'tsconfig.test.json'
     },
-    browsers: [
-      'Chrome',
-      //'Firefox'
-    ],
+    browsers: process.env.KARMA_BROWSERS
+      ? process.env.KARMA_BROWSERS.split(',')
+      : ['Chrome'],
     browserNoActivityTimeout: 60000,
     captureTimeout: 60000,
     client: {
       jasmine: {
         timeoutInterval: 60000
+      }
+    },
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
       }
     }
   })
