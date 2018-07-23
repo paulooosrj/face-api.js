@@ -1,7 +1,7 @@
 import * as faceapi from '../../../src';
 import { FaceLandmarks5 } from '../../../src/mtcnn/FaceLandmarks5';
 import { Point } from '../../../src/Point';
-import { expectMaxDelta, expectPointClose, expectRectClose } from '../../utils';
+import { expectMaxDelta, expectPointClose, expectRectClose, rectDist } from '../../utils';
 
 export const expectedSsdBoxes = [
   { x: 48, y: 253, width: 104, height: 129 },
@@ -30,13 +30,25 @@ export const expectedMtcnnFaceLandmarks = [
   [new Point(489, 224), new Point(534, 223), new Point(507, 250), new Point(493, 271), new Point(530, 270)]
 ]
 
-
 export function expectMtcnnResults(
   results: { faceDetection: faceapi.FaceDetection, faceLandmarks: faceapi.FaceLandmarks5 }[],
-  boxOrder: number[],
   maxBoxDelta: number,
   maxLandmarkPointsDelta: number
 ) {
+
+  // find idx of closest box
+  const boxOrder = results
+    .map(({ faceDetection }) => faceDetection.getBox())
+    .map((box) =>
+      expectedMtcnnBoxes
+        .map((box, idx) => ({ box, idx }))
+        .reduce((closest, curr) => rectDist(box, closest.box) < rectDist(box, curr.box) ? closest : curr)
+        .idx
+  )
+
+  // expect there to be no duplicate indices
+  expect(new Set(boxOrder).size).toEqual(results.length)
+
   results.forEach((result, i) => {
     const { faceDetection, faceLandmarks } = result
     expect(faceDetection instanceof faceapi.FaceDetection).toBe(true)

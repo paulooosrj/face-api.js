@@ -22,7 +22,7 @@ describe('mtcnn', () => {
 
       const results = await mtcnn.forward(imgEl, forwardParams)
       expect(results.length).toEqual(6)
-      expectMtcnnResults(results, [0, 1, 2, 3, 4, 5], 1, 1)
+      expectMtcnnResults(results, 5, 5)
     })
 
     it('minFaceSize = 80, finds all faces', async () => {
@@ -33,7 +33,7 @@ describe('mtcnn', () => {
       const results = await mtcnn.forward(imgEl, forwardParams)
 
       expect(results.length).toEqual(6)
-      expectMtcnnResults(results, [0, 5, 3, 1, 2, 4], 12, 12)
+      expectMtcnnResults(results, 12, 12)
     })
 
     it('all optional params passed, finds all faces', async () => {
@@ -46,7 +46,7 @@ describe('mtcnn', () => {
 
       const results = await mtcnn.forward(imgEl, forwardParams)
       expect(results.length).toEqual(6)
-      expectMtcnnResults(results, [5, 1, 4, 3, 2, 0], 6, 10)
+      expectMtcnnResults(results, 6, 10)
     })
 
     it('scale steps passed, finds all faces', async () => {
@@ -56,7 +56,7 @@ describe('mtcnn', () => {
 
       const results = await mtcnn.forward(imgEl, forwardParams)
       expect(results.length).toEqual(6)
-      expectMtcnnResults(results, [5, 1, 3, 0, 2, 4], 7, 15)
+      expectMtcnnResults(results, 7, 15)
     })
 
   })

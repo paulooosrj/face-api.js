@@ -7,6 +7,9 @@ import { IPoint } from '../src/';
 import { allFacesFactory, allFacesMtcnnFactory } from '../src/allFacesFactory';
 import { allFacesMtcnnFunction, allFacesFunction } from '../src/globalApi';
 
+// increase default timeout for async hooks
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000
+
 export function zeros(length: number): Float32Array {
   return new Float32Array(length)
 }
@@ -48,6 +51,13 @@ export function expectRectClose(
   expectPointClose(result, expectedBox, maxDelta)
   expectMaxDelta(width, expectedBox.width, maxDelta)
   expectMaxDelta(height, expectedBox.height, maxDelta)
+}
+
+export function rectDist (r1: IRect, r2: IRect) {
+  return Math.abs(r1.x - r2.x)
+    + Math.abs(r1.y - r2.y)
+    + Math.abs(r1.width - r2.width)
+    + Math.abs(r1.height - r2.height)
 }
 
 export type WithNetOptions = {

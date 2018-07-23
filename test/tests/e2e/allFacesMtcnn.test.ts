@@ -1,7 +1,6 @@
 import * as faceapi from '../../../src';
 import { FaceLandmarks5 } from '../../../src/mtcnn/FaceLandmarks5';
-import { NetInput } from '../../../src/NetInput';
-import { describeWithNets, expectAllTensorsReleased } from '../../utils';
+import { describeWithNets, expectAllTensorsReleased, expectMaxDelta } from '../../utils';
 import { expectMtcnnResults } from './expectedResults';
 
 describe('allFacesMtcnn', () => {
@@ -29,9 +28,9 @@ describe('allFacesMtcnn', () => {
         faceDetection: res.detection,
         faceLandmarks: res.landmarks as FaceLandmarks5
       }))
-      expectMtcnnResults(mtcnnResult, [0, 1, 2, 3, 4, 5], 1, 1)
+      expectMtcnnResults(mtcnnResult, 5, 5)
       results.forEach(({ descriptor }, i) => {
-        expect(descriptor).toEqual(new Float32Array(facesFaceDescriptors[i]))
+        descriptor.forEach((val, j) => expectMaxDelta(val, facesFaceDescriptors[i][j], 0.05))
       })
     })
 
