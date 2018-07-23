@@ -25,11 +25,15 @@ module.exports = function(config) {
     karmaTypescriptConfig: {
       tsconfig: 'tsconfig.test.json'
     },
-    browsers: ['Chrome'],
+    browsers: [
+      'Chrome',
+      //'Firefox'
+    ],
     browserNoActivityTimeout: 60000,
+    captureTimeout: 60000,
     client: {
       jasmine: {
-        timeoutInterval: 30000
+        timeoutInterval: 60000
       }
     }
   })
